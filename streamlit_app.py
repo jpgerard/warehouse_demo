@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
-import openai
+from openai import OpenAI
 import os
 
-# Set your OpenAI API key here. This is modular, so it can easily be updated.
-openai.api_key = os.getenv("OPENAI_API_KEY")  # You can set the key in your environment or use a config file.
+# Initialize the OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
@@ -23,7 +23,6 @@ prompt_template = (
     "based on the last <{months}> months of shipping volume? "
 )
 full_prompt = prompt_template.format(part=part_number, customer=customer, months=months)
-
 st.write(f"Generated Prompt: {full_prompt}")
 
 # Step 3: Submit Button to trigger the OpenAI API call
@@ -38,13 +37,9 @@ if st.button("Submit"):
             for file in uploaded_files:
                 df = pd.read_excel(file)
                 excel_data.append(df)
-
             # Combine the Excel data if needed or perform some initial analysis
-            # This data can be used in your OpenAI prompt or internal logic
-            
-            # Example of initial data processing (you may customize this):
             combined_data = pd.concat(excel_data, ignore_index=True)
-
+            
             # Step 5: Format the prompt with user data and predefined instructions
             system_message = (
                 f"We want to layout by the top customers based on volume. "
@@ -54,21 +49,28 @@ if st.button("Submit"):
                 f"Use all the data provided, to determine where Part {part_number} belonging to {customer} should be stored "
                 f"based on the last {months} months of shipping volume."
             )
-
+            
             # Step 6: Make the OpenAI API request
-            response = openai.Completion.create(
+            response = client.chat.completions.create(
                 model="gpt-4",  # Use the correct model here
-                prompt=system_message,
+                messages=[
+                    {"role": "system", "content": "You are a warehouse management assistant."},
+                    {"role": "user", "content": system_message}
+                ],
                 max_tokens=500  # Set appropriate token limits
             )
-
+            
             # Step 7: Display the formatted response
-            api_response = response['choices'][0]['text']
+            api_response = response.choices[0].message.content
             st.subheader("API Response:")
             st.write(api_response)
-
         except Exception as e:
             # Handle errors such as API connection issues
+            st.error(f"An error occurred: {str(e)}")
+
+# Step 8: Instructions for deployment
+st.info("This app can be deployed on Streamlit Cloud or any other hosting service. "
+        "Make sure to set the OPENAI_API_KEY in your environment for secure API access.")
             st.error(f"An error occurred: {str(e)}")
 
 # Step 8: Instructions for deployment
