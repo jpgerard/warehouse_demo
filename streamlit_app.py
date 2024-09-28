@@ -75,6 +75,7 @@ if st.button("Submit"):
 st.info("This app can be deployed on Streamlit Cloud or any other hosting service. "
         "Make sure to set the OPENAI_API_KEY in your environment for secure API access.")
 
+
             st.error(f"An error occurred: {str(e)}")
 
 # Step 8: Instructions for deployment
