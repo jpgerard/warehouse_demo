@@ -4,7 +4,7 @@ import openai
 import os
 
 # Set your OpenAI API key directly (replace with your actual key)
-openai.api_key = "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"  # Replace with your actual OpenAI API key
+client = openai.api_key = "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"  # Replace with your actual OpenAI API key
 
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
@@ -51,7 +51,7 @@ if st.button("Submit"):
             )
             
             # Step 6: Make the OpenAI API request using Completion.create
-            response = openai.Completion.create(
+            response = client.chat.completions.create(
                 engine="text-davinci-003",  # Consider using a more suitable engine for warehouse management tasks
                 prompt=full_prompt + system_message,  # Combine prompt and system message
                 max_tokens=500,  # Set appropriate token limits
