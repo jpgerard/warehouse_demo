@@ -50,18 +50,16 @@ if st.button("Submit"):
                 f"based on the last {months} months of shipping volume."
             )
             
-            # Step 6: Make the OpenAI API request
-            response = openai.completions.create(
-                model="gpt-4",  # Use the correct model here
-                messages=[
-                    {"role": "system", "content": "You are a warehouse management assistant."},
-                    {"role": "user", "content": system_message}
-                ],
-                max_tokens=500  # Set appropriate token limits
+            # Step 6: Make the OpenAI API request (ensure 'model' and 'prompt' are provided)
+            response = openai.Completion.create(
+                model="text-davinci-003",  # Specify a valid GPT-3 model
+                prompt=system_message,
+                max_tokens=500,  # Set appropriate token limit
+                temperature=0.7  # Optional: Set the temperature for creativity
             )
             
             # Step 7: Display the formatted response
-            api_response = response.choices[0].message.content
+            api_response = response.choices[0].text
             st.subheader("API Response:")
             st.write(api_response)
         except Exception as e:
