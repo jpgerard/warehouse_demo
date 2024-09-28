@@ -51,7 +51,7 @@ if st.button("Submit"):
             )
             
             # Step 6: Make the OpenAI API request
-            response = client.chat.completions.create(
+            response = openai.ChatCompletion.create(
                 model="gpt-4",  # Use the correct model here
                 messages=[
                     {"role": "system", "content": "You are a warehouse management assistant."},
