@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from openai import OpenAI
+from PIL import Image
 
 # Fetch the OpenAI API key from Streamlit secrets
 api_key = st.secrets["openai"]["api_key"]
@@ -11,6 +12,10 @@ client = OpenAI(api_key=api_key)
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
 
+# Add an image below the title
+image = Image.open("warehouse_image.jpg")  # Replace with your image path
+st.image(image, caption="Warehouse Management", use_column_width=True)
+
 # Step 1: Excel File Uploader
 uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_multiple_files=True)
 
@@ -19,47 +24,40 @@ part_number = st.text_input("Enter Part Number:")
 customer = st.text_input("Enter Customer Name:")
 months = st.number_input("Enter Number of Months of Shipping Volume:", min_value=1, value=3, step=1)
 
-# Display the dynamic prompt being generated
-prompt_template = (
-    "Based on all the data provided, where should part {part} belonging to {customer} be stored "
-    "based on the last {months} months of shipping volume? "
-)
-
-full_prompt = prompt_template.format(part=part_number, customer=customer, months=months)
-st.write(f"Use Case 1: {full_prompt}")
-
 # Step 3: Submit Button to trigger the OpenAI API call
 if st.button("Submit"):
-    # Check if files are uploaded and inputs are provided
     if not uploaded_files or not part_number or not customer:
         st.error("Please upload the Excel files and fill in all input fields before submitting.")
     else:
         try:
-            # Step 4: Process the uploaded Excel files
+            # Process the uploaded Excel files
             excel_data = []
             for file in uploaded_files:
                 df = pd.read_excel(file)
                 excel_data.append(df)
             combined_data = pd.concat(excel_data, ignore_index=True)
             
-            # Step 5: Format the prompt with user data and predefined instructions
+            # Format the prompt with user data, predefined instructions, and response template
             system_message = f"""
-            We want to layout by the top customers based on volume. 
-            Keep these top customers separated in separate areas, this will prevent traffic congestion in the warehouse. 
-            Layout by container type, keeping the same containers together so they stack better on skids. 
-            In the current layout, the warehouse is divided into rows (A to E), with each row having 36 racks. 
-            Use all the data provided, to determine where Part {part_number} belonging to {customer} should be stored 
-            based on the last {months} months of shipping volume. 
-            The answer should look like this example: 
-                •   Row: C
-                Row C is designated for moderate turnover parts and is ideally positioned near the middle of the warehouse for efficient access.
-                •   Rack: Rack 10 to 15
-                Since this part is expected to have moderate shipping frequency, we can assign it to Rack 10 to 15 in Row C. This placement allows enough space for storing 50,000 units while keeping it accessible for picking.
-                •  Rack Level: Lower to Mid-Level
-                The part should be placed on the lower to mid-level shelves of racks 10 to 15 in Row C. This makes the part easily reachable without the need for equipment.
+            Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of shipping volume. 
+            Consider the following warehouse layout and guidelines:
+            - The warehouse is divided into rows (A to E), with each row having 36 racks.
+            - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
+            - Parts should be grouped by container type for better stacking on skids.
+            
+            Based on this analysis, provide a storage recommendation in the following format:
+
+            •   Row: [Specify row letter]
+            [Explain why this row is suitable for the part's turnover rate and warehouse efficiency]
+            •   Rack: [Specify rack numbers]
+            [Explain why these racks are appropriate based on shipping frequency and space requirements]
+            •   Rack Level: [Specify the level within the rack]
+            [Explain why this level is suitable for accessibility and efficient picking]
+
+            Ensure your response is data-driven and follows this exact structure, providing specific recommendations and explanations for each point.
             """
             
-            # Step 6: Make the OpenAI API request using ChatCompletion
+            # Make the OpenAI API request
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -69,13 +67,13 @@ if st.button("Submit"):
                 max_tokens=500
             )
             
-            # Step 7: Display the formatted response
+            # Display the formatted response
             api_response = response.choices[0].message.content
-            st.subheader("API Response:")
+            st.subheader("Storage Recommendation:")
             st.write(api_response)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
-# Step 8: Instructions for deployment
+# Instructions for deployment
 st.info("This app can be deployed on Streamlit Cloud or any other hosting service. "
         "Make sure to set the OPENAI_API_KEY in your environment for secure API access.")
