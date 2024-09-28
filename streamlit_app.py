@@ -50,14 +50,11 @@ if st.button("Submit"):
                 f"based on the last {months} months of shipping volume."
             )
             
-            # Step 6: Make the OpenAI API request using ChatCompletion
-            response = openai.ChatCompletion.create(
-                model="gpt-4",  # Use the correct model
-                messages=[
-                    {"role": "system", "content": "You are a warehouse management assistant."},
-                    {"role": "user", "content": system_message}
-                ],
-                max_tokens=500  # Set appropriate token limits
+            # Step 6: Make the OpenAI API request using Completion.create
+            response = openai.Completion.create(
+                engine="text-davinci-003",  # Consider using a more suitable engine for warehouse management tasks
+                prompt=full_prompt + system_message,  # Combine prompt and system message
+                max_tokens=500,  # Set appropriate token limits
             )
             
             # Step 7: Display the formatted response
