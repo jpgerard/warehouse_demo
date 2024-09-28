@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import openai
-import os
 
 # Set your OpenAI API key directly (replace with your actual key)
 openai.api_key = "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"  # Replace with your actual OpenAI API key
@@ -50,11 +49,14 @@ if st.button("Submit"):
                 f"based on the last {months} months of shipping volume."
             )
             
-            # Step 6: Make the OpenAI API request using Completion.create
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=full_prompt + system_message,
-                max_tokens=500,
+            # Step 6: Make the OpenAI API request using ChatCompletion
+            response = openai.ChatCompletion.create(
+                model="gpt-4",  # Use the correct model, e.g., 'gpt-3.5-turbo' or 'gpt-4'
+                messages=[
+                    {"role": "system", "content": "You are a warehouse management assistant."},
+                    {"role": "user", "content": system_message}
+                ],
+                max_tokens=500  # Set appropriate token limits
             )
             
             # Step 7: Display the formatted response
