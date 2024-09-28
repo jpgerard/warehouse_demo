@@ -4,7 +4,7 @@ from openai import OpenAI
 import os
 
 # Set your OpenAI API key here. This is modular, so it can easily be updated.
-openai.api_key = os.getenv("OPENAI_API_KEY")  # You can set the key in your environment or use a config file.
+Openai.api_key = os.getenv("OPENAI_API_KEY")  # You can set the key in your environment or use a config file.
 
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
