@@ -6,7 +6,7 @@ from openai import OpenAI
 client = OpenAI(
     # This is the default and can be omitted
     api_key = "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"
-
+)
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
 
