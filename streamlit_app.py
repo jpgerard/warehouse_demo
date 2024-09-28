@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import os
 from openai import OpenAI
 
 # Fetch the OpenAI API key from Streamlit secrets
@@ -66,7 +65,7 @@ if st.button("Submit"):
             )
             
             # Step 7: Display the formatted response
-            api_response = response['choices'][0]['message']['content']
+            api_response = response.choices[0].message.content
             st.subheader("API Response:")
             st.write(api_response)
         except Exception as e:
