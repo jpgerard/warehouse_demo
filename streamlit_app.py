@@ -6,7 +6,7 @@ from openai import OpenAI
 # Set your OpenAI API key directly (replace with your actual key)
 client = OpenAI(
     # This is the default and can be omitted
-    api_key=os.environ.get("OPENAI_API_KEY"),
+    api_key=api_key=st.secrets["openai"]["api_key"]
 )
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
