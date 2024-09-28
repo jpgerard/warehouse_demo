@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from openai import OpenAI
-from PIL import Image
+#from PIL import Image
 
 # Fetch the OpenAI API key from Streamlit secrets
 api_key = st.secrets["openai"]["api_key"]
@@ -13,8 +13,8 @@ client = OpenAI(api_key=api_key)
 st.title("Warehouse Management Assistant")
 
 # Add an image below the title
-image = Image.open("warehouse_image.jpg")  # Replace with your image path
-st.image(image, caption="Warehouse Management", use_column_width=True)
+#image = Image.open("warehouse_image.jpg")  # Replace with your image path
+#st.image(image, caption="Warehouse Management", use_column_width=True)
 
 # Step 1: Excel File Uploader
 uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_multiple_files=True)
