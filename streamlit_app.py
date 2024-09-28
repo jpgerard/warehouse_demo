@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from openai import OpenAI
+import openai
 import os
 
 # Set your OpenAI API key here. This is modular, so it can easily be updated.
