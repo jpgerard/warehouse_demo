@@ -17,17 +17,19 @@ st.title("Warehouse Management Assistant")
 uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_multiple_files=True)
 
 # Step 2: Text Input Fields for Parameters
-part_number = st.text_input("Enter Part Number:")
-customer = st.text_input("Enter Customer Name:")
-months = st.text_input("Enter Number of Months of Shipping Volume:", value="6")
 
 # Display the dynamic prompt being generated
 prompt_template = (
-    "Based on all the data provided, where should part <{part}> belonging to <{customer}> be stored "
-    "based on the last <{months}> months of shipping volume? "
+    "Based on all the data provided, where should part {part} belonging to {customer} be stored "
+    "based on the last {months} months of shipping volume? "
 )
+
+part_number = st.text_input("Enter Part Number:")
+customer = st.text_input("Enter Customer Name:")
+months = st.text_input("Enter Number of Months of Shipping Volume:", value="3")
+
 full_prompt = prompt_template.format(part=part_number, customer=customer, months=months)
-st.write(f"Generated Prompt: {full_prompt}")
+st.write(f"Use Case 1: {full_prompt}")
 
 # Step 3: Submit Button to trigger the OpenAI API call
 if st.button("Submit"):
@@ -51,7 +53,15 @@ if st.button("Submit"):
                 f"Layout by container type, keeping the same containers together so they stack better on skids. "
                 f"In the current layout, the warehouse is divided into rows (A to E), with each row having 36 racks. "
                 f"Use all the data provided, to determine where Part {part_number} belonging to {customer} should be stored "
-                f"based on the last {months} months of shipping volume."
+                f"based on the last {months} months of shipping volume. "
+                f"The answer should look like this example: 
+                    •   Row: C
+                    Row C is designated for moderate turnover parts and is ideally positioned near the middle of the warehouse for efficient access.
+                    •   Rack: Rack 10 to 15
+                    Since this part is expected to have moderate shipping frequency, we can assign it to Rack 10 to 15 in Row C. This placement allows enough space for storing 50,000 units while keeping it accessible for picking.
+                    •  Rack Level: Lower to Mid-Level
+                    The part should be placed on the lower to mid-level shelves of racks 10 to 15 in Row C. This makes the part easily reachable without the need for equipment.” 
+
             )
             
             # Step 6: Make the OpenAI API request using ChatCompletion
