@@ -56,21 +56,25 @@ if st.button("Submit"):
             )
 
             # Step 6: Make the OpenAI API request
-            response = openai.ChatCompletion.create(
-                model="gpt-4",  # Make sure to use a valid model
-                messages=[
-                    {"role": "system", "content": "You are a warehouse layout optimization assistant."},
-                    {"role": "user", "content": system_message},
-                ]
+            response = openai.Completion.create(
+                model="gpt-4",  # Use the correct model here
+                prompt=system_message,
+                max_tokens=500  # Set appropriate token limits
             )
 
             # Step 7: Display the formatted response
-            api_response = response['choices'][0]['message']['content']
+            api_response = response['choices'][0]['text']
             st.subheader("API Response:")
             st.write(api_response)
 
         except Exception as e:
             # Handle errors such as API connection issues
+            st.error(f"An error occurred: {str(e)}")
+
+# Step 8: Instructions for deployment
+st.info("This app can be deployed on Streamlit Cloud or any other hosting service. "
+        "Make sure to set the OPENAI_API_KEY in your environment for secure API access.")
+
             st.error(f"An error occurred: {str(e)}")
 
 # Step 8: Instructions for deployment
