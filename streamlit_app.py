@@ -3,11 +3,14 @@ import pandas as pd
 import os
 from openai import OpenAI
 
-# Set your OpenAI API key directly (replace with your actual key)
+# Fetch the OpenAI API key from Streamlit secrets
+api_key = st.secrets["openai"]["api_key"]
+
+# Initialize the OpenAI client using the API key from Streamlit secrets
 client = OpenAI(
-    # This is the default and can be omitted
-    api_key=st.secrets["openai"]["api_key"]
+    api_key=api_key
 )
+
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
 
