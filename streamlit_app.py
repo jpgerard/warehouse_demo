@@ -88,7 +88,7 @@ additional_question = st.text_input("Ask additional questions about the data:")
 if st.button("Submit Question"):
     if additional_question:
         try:
-             if combined_data is not None:
+            if combined_data is not None:
                 # Include a summary of the Excel data in the prompt for the chat question
                 excel_summary = combined_data.head().to_string()  # You can summarize or clean the data as necessary
 
@@ -100,7 +100,7 @@ if st.button("Submit Question"):
 
                 Now answer the following question:
                 {additional_question}
-                """
+                """    
             # Format the prompt for the chat question
             chat_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
