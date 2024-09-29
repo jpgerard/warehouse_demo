@@ -14,7 +14,7 @@ st.info("MULTIFACTOR AI - for NIFCO")
 
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
-st.header("Based on shipping volume -and all the data provided-, where should a part be stored")
+st.header("Based on sales volume -and all the data provided-, where should a part be stored")
 
 # Load and display the image (if available)
 # image = Image.open("warehouse_image.jpg")  # Uncomment if using an image
@@ -30,7 +30,7 @@ uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_mu
 # Step 2: Text Input Fields for Parameters
 part_number = st.text_input("Enter Part Number:")
 customer = st.text_input("Enter Customer Name:")
-months = st.number_input("Last X Months of Shipping Volume:", min_value=1, value=3, step=1)
+months = st.number_input("Last X Months of Sales Volume:", min_value=1, value=3, step=1)
 
 # Step 3: Submit Button to trigger the OpenAI API call
 if st.button("Submit"):
@@ -47,7 +47,7 @@ if st.button("Submit"):
 
             # Step 5: Format the prompt with user data and predefined instructions
             system_message = f"""
-            Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of shipping volume. 
+            Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of sales volume. 
             Consider the following warehouse layout and guidelines:
             - The warehouse is divided into rows (A to E), with each row having 36 racks.
             - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
