@@ -61,7 +61,7 @@ if st.button("Submit"):
             )
 
             # Step 7: Display the formatted response
-            chat_api_response = chat_response.choices[0].message.content
+            api_response = response.choices[0].message.content
             st.subheader("API Response:")
             st.write(api_response)
         except Exception as e:
