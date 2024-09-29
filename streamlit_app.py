@@ -42,14 +42,24 @@ if st.button("Submit"):
             combined_data = pd.concat(excel_data, ignore_index=True)
 
             # Step 5: Format the prompt with user data and predefined instructions
-            system_message = (
-                f"We want to layout by the top customers based on volume. "
-                f"Keep these top customers separated in separate areas, this will prevent traffic congestion in the warehouse. "
-                f"Layout by container type, keeping the same containers together so they stack better on skids. "
-                f"In the current layout, the warehouse is divided into rows (A to E), with each row having 36 racks. "
-                f"Use all the data provided, to determine where Part {part_number} belonging to {customer} should be stored "
-                f"based on the last {months} months of shipping volume."
-            )
+            system_message = f"""
+            Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of shipping volume. 
+            Consider the following warehouse layout and guidelines:
+            - The warehouse is divided into rows (A to E), with each row having 36 racks.
+            - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
+            - Parts should be grouped by container type for better stacking on skids.
+            
+            Based on this analysis, provide a storage recommendation in the following format:
+
+            •   Row: [Specify row letter]
+            [Explain why this row is suitable for the part's turnover rate and warehouse efficiency]
+            •   Rack: [Specify rack numbers]
+            [Explain why these racks are appropriate based on shipping frequency and space requirements]
+            •   Rack Level: [Specify the level within the rack]
+            [Explain why this level is suitable for accessibility and efficient picking]
+
+            Ensure your response is data-driven and follows this exact structure, providing specific recommendations and explanations for each point.
+            """
 
             # Step 6: Make the OpenAI API request
             response = client.chat.completions.create(
