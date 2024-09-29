@@ -54,7 +54,7 @@ if st.button("Submit"):
             - Parts should be grouped by container type for better stacking on skids.
             
             Based on this analysis, provide a storage recommendation in the following format:
-
+            Shipping volume for {customer}
             •   Row: [Specify row letter]
             
             •   Rack: [Specify rack numbers]
@@ -88,6 +88,7 @@ if st.button("Submit"):
 # Add a chat box at the bottom for additional questions
 st.subheader("Ask additional questions about the data")
 
+"""
 # Chat box input
 additional_question = st.text_input("Ask additional questions about the data:")
 
@@ -127,3 +128,4 @@ if st.button("Submit Question"):
             st.error(f"An error occurred: {str(e)}")
     else:
         st.error("Please ask a question before submitting.")
+"""
