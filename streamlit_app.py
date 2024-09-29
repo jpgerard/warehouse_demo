@@ -66,7 +66,7 @@ if st.button("Submit"):
             [Explain breifly why these racks are appropriate based on shipping frequency and space requirements]
             [Explain breifly why this level is suitable for accessibility and efficient picking]
 
-            Ensure your response is data-driven -only use data from the spreadsheet" and follows this exact structure, providing specific recommendations and explanations for each point after displaying the short answer.
+            Ensure your response is data-driven -only use data from the spreadsheet and follows this exact structure, providing specific recommendations and explanations for each point after displaying the short answer.
             """
 
 
