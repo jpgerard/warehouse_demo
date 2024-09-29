@@ -52,8 +52,8 @@ if st.button("Submit"):
             - The warehouse is divided into rows (A to E), with each row having 36 racks.
             - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
             - Parts should be grouped by container type for better stacking on skids.
-             First, give the Shipping volume for {customer} [get the data from the spreadsheet]
-             then give a description of {part_number} [find description for that part number]
+             First, give the Shipping volume for {customer} [get volume from the spreadsheet]
+             then give a description of {part_number} [get description from spreadhseet]
             Based on this analysis, provide a storage recommendation in the following format:
         
             •   Row: [Specify row letter]
