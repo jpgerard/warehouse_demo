@@ -73,7 +73,7 @@ if st.button("Submit"):
 
             # Step 7: Display the formatted response
             api_response = response.choices[0].message.content
-            st.subheader("API Response:")
+            st.subheader("Part Location Answer:")
             st.write(api_response)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
@@ -88,6 +88,19 @@ additional_question = st.text_input("Ask additional questions about the data:")
 if st.button("Submit Question"):
     if additional_question:
         try:
+             if combined_data is not None:
+                # Include a summary of the Excel data in the prompt for the chat question
+                excel_summary = combined_data.head().to_string()  # You can summarize or clean the data as necessary
+
+                # Format the prompt for the chat question including the Excel data summary
+                system_message_chat = f"""
+                You are provided with the following warehouse data and asked to help with warehouse management:
+
+                {excel_summary}
+
+                Now answer the following question:
+                {additional_question}
+                """
             # Format the prompt for the chat question
             chat_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
