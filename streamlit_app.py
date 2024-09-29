@@ -62,7 +62,7 @@ if st.button("Submit"):
             """
 
             # Step 6: Make the OpenAI API request
-            response = client.chat.completions.create(
+            response = openai.ChatCompletion.create(
                 model="gpt-4",  # Make sure to use a valid model
                 messages=[
                     {"role": "system", "content": "You are a warehouse layout optimization assistant."},
@@ -71,7 +71,7 @@ if st.button("Submit"):
             )
 
             # Step 7: Display the formatted response
-            api_response = response.choices[0].message.content
+            api_response = response.choices[0].message['content']
             st.subheader("API Response:")
             st.write(api_response)
         except Exception as e:
@@ -88,7 +88,7 @@ if st.button("Submit Question"):
     if additional_question:
         try:
             # Format the prompt for the chat question
-            chat_response = client.chat.completions.create(
+            chat_response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a warehouse management assistant."},
@@ -98,7 +98,7 @@ if st.button("Submit Question"):
             )
             
             # Display the response from the chat box
-            chat_api_response = chat_response.choices[0].message.content
+             chat_api_response = chat_response.choices[0].message['content']
             st.subheader("Response to Your Question:")
             st.write(chat_api_response)
         except Exception as e:
