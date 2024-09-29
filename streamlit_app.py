@@ -72,7 +72,7 @@ if st.button("Submit"):
 
             # Step 6: Make the OpenAI API request
             response = client.chat.completions.create(
-                model="gpt-4",  # Make sure to use a valid model
+                model="gpt-3.5 Turbo",  # Make sure to use a valid model
                 messages=[
                     {"role": "system", "content": "You are a warehouse layout optimization assistant."},
                     {"role": "user", "content": system_message},
