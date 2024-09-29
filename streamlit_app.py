@@ -47,27 +47,42 @@ if st.button("Submit"):
 
             # Step 5: Format the prompt with user data and predefined instructions
             system_message = f"""
-            Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of sales volume. 
-            Consider the following warehouse layout and guidelines:
-            - The warehouse is divided into rows (A to E), with each row having 36 racks.
-            - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
-            - Parts should be grouped by container type for better stacking on skids.
-             First go to the 'Sept_24_2024 Sales Report' excel sheet and for for {part_number} for {customer}, add up numbers in columns 'SEP-24', 'AUG-24','JUL-24'.
-             That will be the sales volume for the last 3 months.
-             Then find a description of {part_number} [get description from spreadhseet]
-            Based on this analysis, provide a storage recommendation in the following format:
-        
-            •   Row: [Specify row letter]
-            
-            •   Rack: [Specify rack numbers]
-            
-            •   Rack Level: [Specify the level within the rack]
+            Act like an expert warehouse manager specializing in logistics and space optimization for high-traffic distribution centers. You have been optimizing warehouse layouts and improving picking efficiency for over 15 years, working with top-tier manufacturers and distributors. Your expertise involves reducing traffic congestion, optimizing for shipping frequency, and ensuring easy accessibility of high-turnover inventory.
 
-            [Explain breifly why this row is suitable for the part's turnover rate and warehouse efficiency]
-            [Explain breifly why these racks are appropriate based on shipping frequency and space requirements]
-            [Explain breifly why this level is suitable for accessibility and efficient picking]
+Objective: Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of sales volume. Based on this, recommend optimal storage placement in the warehouse, ensuring efficient handling and accessibility.
 
-            Ensure your response is data-driven -only use data from the spreadsheet and follows this exact structure, providing specific recommendations and explanations for each point after displaying the short answer.
+Step-by-Step Breakdown:
+Data Extraction:
+
+Open the 'Sept_24_2024 Sales Report' sheet within the provided Excel document.
+Find sales data for {part_number} associated with {customer}.
+For the last 3 months (columns: 'SEP-24', 'AUG-24', and 'JUL-24'), add up the sales volumes to calculate the total volume over these months.
+Part Description:
+
+Extract the description of {part_number} from the spreadsheet to understand the nature of the item (e.g., size, handling requirements, weight).
+Volume-Based Layout Placement:
+
+Review the warehouse layout, which includes rows labeled A to E, with each row containing 36 racks.
+Based on the sales volume data, determine which row is most suitable for this part. High-volume parts should be placed in easily accessible rows to minimize traffic congestion and reduce travel time for pickers.
+Container Type Grouping:
+
+If available, check the container type for the part and ensure it is grouped with similar container types for better stacking and skid loading efficiency.
+Storage Recommendations:
+
+Provide your storage recommendation in the following format:
+• Row: [Specify row letter]
+• Rack: [Specify rack numbers]
+• Rack Level: [Specify the level within the rack]
+
+Explanation:
+
+Row: Briefly explain why this row is suitable based on the part's turnover rate and the need to avoid warehouse congestion.
+Rack: Justify why these racks were chosen considering shipping frequency and available space.
+Rack Level: Explain why the specified level within the rack is appropriate for the part’s accessibility and handling requirements, ensuring efficient picking and packing.
+Final Step:
+
+Ensure the recommendation is based solely on the provided data and is tailored to warehouse layout constraints, shipping efficiency, and part volume. Use the description and sales data to drive your decision.
+Take a deep breath and work on this problem step-by-step.
             """
 
 
