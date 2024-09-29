@@ -20,6 +20,10 @@ st.header("Based on shipping volume -and all the data provided-, where should a 
 # image = Image.open("warehouse_image.jpg")  # Uncomment if using an image
 # st.image(image, caption="Warehouse Management", use_column_width=True)
 
+# Initialize session state for storing combined Excel data
+if "combined_data" not in st.session_state:
+    st.session_state.combined_data = None  # Initialize it to None
+
 # Step 1: Excel File Uploader
 uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_multiple_files=True)
 
@@ -52,13 +56,16 @@ if st.button("Submit"):
             Based on this analysis, provide a storage recommendation in the following format:
 
             •   Row: [Specify row letter]
-            [Explain why this row is suitable for the part's turnover rate and warehouse efficiency]
+            
             •   Rack: [Specify rack numbers]
-            [Explain why these racks are appropriate based on shipping frequency and space requirements]
+            
             •   Rack Level: [Specify the level within the rack]
-            [Explain why this level is suitable for accessibility and efficient picking]
 
-            Ensure your response is data-driven and follows this exact structure, providing specific recommendations and explanations for each point.
+            [Explain breifly why this row is suitable for the part's turnover rate and warehouse efficiency]
+            [Explain breifly why these racks are appropriate based on shipping frequency and space requirements]
+            [Explain breifly why this level is suitable for accessibility and efficient picking]
+
+            Ensure your response is data-driven and follows this exact structure, providing specific recommendations and explanations for each point after displaying the short answer.
             """
 
 
