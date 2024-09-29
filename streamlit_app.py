@@ -52,9 +52,9 @@ if st.button("Submit"):
             - The warehouse is divided into rows (A to E), with each row having 36 racks.
             - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
             - Parts should be grouped by container type for better stacking on skids.
-             First go to the 'Sept_24_2024 Sales Report' excel sheet and add up numbers in columns 'SEP-24', 'AUG-24','JUL-24'
-             for {part_number} for {customer} . That's the sales volume
-             then give a description of {part_number} [get description from spreadhseet]
+             First go to the 'Sept_24_2024 Sales Report' excel sheet and for for {part_number} for {customer}, add up numbers in columns 'SEP-24', 'AUG-24','JUL-24'.
+             That will be the sales volume for the last 3 months.
+             Then find a description of {part_number} [get description from spreadhseet]
             Based on this analysis, provide a storage recommendation in the following format:
         
             •   Row: [Specify row letter]
