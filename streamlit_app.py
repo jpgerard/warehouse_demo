@@ -9,6 +9,9 @@ api_key = st.secrets["openai"]["api_key"]
 # Initialize the OpenAI client using the API key from Streamlit secrets
 client = OpenAI(api_key=api_key)
 
+# LOGO
+st.info("MULTIFACTOR AI - for NIFCO")
+
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
 st.header("Based on shipping volume -and all the data provided-, where should a part be stored")
@@ -63,9 +66,6 @@ if st.button("Submit"):
             st.write(api_response)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
-
-# Instructions for deployment
-st.info("MULTIFACTOR AI - for NIFCO")
 
 # Add a chat box at the bottom for additional questions
 st.subheader("Ask additional questions about the data")
