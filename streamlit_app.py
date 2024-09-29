@@ -57,7 +57,7 @@ Data Analysis:
 
 Open the 'Sept_24_2024 Sales Report' sheet in the provided Excel document.
 Locate the part {part_number} for the customer {customer}.
-Add up the sales volume for the last 3 months, specifically from columns 'SEP-24', 'AUG-24', and 'JUL-24', to determine the total sales volume.
+Add up the sales volume for the last {months} months to determine the total sales volume.
 Part Information:
 
 Retrieve the description of {part_number} from the spreadsheet to understand its physical characteristics (size, weight, and handling requirements).
@@ -83,6 +83,8 @@ Rack Level: Justify why this rack level is appropriate, focusing on ease of acce
 Final Output:
 Ensure your recommendation is data-driven, using sales volume and part characteristics to make the best possible storage decision. Stick to the format provided and include a clear explanation for each choice.
 Take a deep breath and work on this problem step-by-step.
+only display [Storage Recommendation:] and [Explanation:]
+
             """
 
 
