@@ -98,7 +98,7 @@ if st.button("Submit Question"):
             )
             
             # Display the response from the chat box
-             chat_api_response = chat_response.choices[0].message['content']
+            chat_api_response = chat_response.choices[0].message['content']
             st.subheader("Response to Your Question:")
             st.write(chat_api_response)
         except Exception as e:
