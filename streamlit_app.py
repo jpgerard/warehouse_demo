@@ -95,9 +95,10 @@ additional_question = st.text_input("Ask additional questions about the data:")
 if st.button("Submit Question"):
     if additional_question:
         try:
-            if combined_data is not None:
+            # Check if Excel data is available
+            if st.session_state.combined_data is not None:
                 # Include a summary of the Excel data in the prompt for the chat question
-                excel_summary = combined_data.head().to_string()  # You can summarize or clean the data as necessary
+                excel_summary = st.session_state.combined_data.head().to_string()  # You can summarize or clean the data as necessary
 
                 # Format the prompt for the chat question including the Excel data summary
                 system_message_chat = f"""
