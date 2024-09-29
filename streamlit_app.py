@@ -30,7 +30,7 @@ uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_mu
 # Step 2: Text Input Fields for Parameters
 part_number = st.text_input("Enter Part Number:")
 customer = st.text_input("Enter Customer Name:")
-months = st.number_input("Enter Number of Months of Shipping Volume:", min_value=1, value=3, step=1)
+months = st.number_input("Last X Months of Shipping Volume:", min_value=1, value=3, step=1)
 
 # Step 3: Submit Button to trigger the OpenAI API call
 if st.button("Submit"):
