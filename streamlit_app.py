@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from openai import OpenAI
-#from PIL import Image
+from PIL import Image
 
 # Fetch the OpenAI API key from Streamlit secrets
 api_key = st.secrets["openai"]["api_key"]
@@ -11,10 +11,11 @@ client = OpenAI(api_key=api_key)
 
 # Title of the Streamlit app
 st.title("Warehouse Management Assistant")
+st.header("Based on shipping volume -and all the data provided-, where should a part be stored")
 
-# Add an image below the title
-#image = Image.open("warehouse_image.jpg")  # Replace with your image path
-#st.image(image, caption="Warehouse Management", use_column_width=True)
+# Load and display the image (if available)
+# image = Image.open("warehouse_image.jpg")  # Uncomment if using an image
+# st.image(image, caption="Warehouse Management", use_column_width=True)
 
 # Step 1: Excel File Uploader
 uploaded_files = st.file_uploader("Upload Excel files", type=["xlsx"], accept_multiple_files=True)
@@ -36,44 +37,61 @@ if st.button("Submit"):
                 df = pd.read_excel(file)
                 excel_data.append(df)
             combined_data = pd.concat(excel_data, ignore_index=True)
-            
-            # Format the prompt with user data, predefined instructions, and response template
-            system_message = f"""
-            Analyze the provided Excel data for Part {part_number} belonging to {customer}, focusing on the last {months} months of shipping volume. 
-            Consider the following warehouse layout and guidelines:
-            - The warehouse is divided into rows (A to E), with each row having 36 racks.
-            - Layout should be organized by top customers based on volume, keeping them separated to prevent traffic congestion.
-            - Parts should be grouped by container type for better stacking on skids.
-            
-            Based on this analysis, provide a storage recommendation in the following format:
 
-            •   Row: [Specify row letter]
-            [Explain why this row is suitable for the part's turnover rate and warehouse efficiency]
-            •   Rack: [Specify rack numbers]
-            [Explain why these racks are appropriate based on shipping frequency and space requirements]
-            •   Rack Level: [Specify the level within the rack]
-            [Explain why this level is suitable for accessibility and efficient picking]
-
-            Ensure your response is data-driven and follows this exact structure, providing specific recommendations and explanations for each point.
-            """
-            
-            # Make the OpenAI API request
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": "You are a warehouse management assistant."},
-                    {"role": "user", "content": system_message}
-                ],
-                max_tokens=500
+            # Step 5: Format the prompt with user data and predefined instructions
+            system_message = (
+                f"We want to layout by the top customers based on volume. "
+                f"Keep these top customers separated in separate areas, this will prevent traffic congestion in the warehouse. "
+                f"Layout by container type, keeping the same containers together so they stack better on skids. "
+                f"In the current layout, the warehouse is divided into rows (A to E), with each row having 36 racks. "
+                f"Use all the data provided, to determine where Part {part_number} belonging to {customer} should be stored "
+                f"based on the last {months} months of shipping volume."
             )
-            
-            # Display the formatted response
-            api_response = response.choices[0].message.content
-            st.subheader("Storage Recommendation:")
+
+            # Step 6: Make the OpenAI API request
+            response = openai.ChatCompletion.create(
+                model="gpt-4",  # Make sure to use a valid model
+                messages=[
+                    {"role": "system", "content": "You are a warehouse layout optimization assistant."},
+                    {"role": "user", "content": system_message},
+                ]
+            )
+
+            # Step 7: Display the formatted response
+            api_response = response['choices'][0]['message']['content']
+            st.subheader("API Response:")
             st.write(api_response)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
 # Instructions for deployment
-st.info("This app can be deployed on Streamlit Cloud or any other hosting service. "
-        "Make sure to set the OPENAI_API_KEY in your environment for secure API access.")
+st.info("MULTIFACTOR AI - for NIFCO")
+
+# Add a chat box at the bottom for additional questions
+st.subheader("Ask additional questions about the data")
+
+# Chat box input
+additional_question = st.text_input("Ask additional questions about the data:")
+
+# Submit button for the chat box
+if st.button("Submit Question"):
+    if additional_question:
+        try:
+            # Format the prompt for the chat question
+            chat_response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a warehouse management assistant."},
+                    {"role": "user", "content": additional_question}
+                ],
+                max_tokens=500
+            )
+            
+            # Display the response from the chat box
+            chat_api_response = chat_response.choices[0].message.content
+            st.subheader("Response to Your Question:")
+            st.write(chat_api_response)
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+    else:
+        st.error("Please ask a question before submitting.")
