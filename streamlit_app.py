@@ -127,5 +127,5 @@ if st.button("Submit Question"):
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
     else:
-        st.error("Please ask a question before submitting.")
+        st.error("Please ask a question before submitting.") 
 """
