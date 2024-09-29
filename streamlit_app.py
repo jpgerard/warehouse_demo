@@ -85,10 +85,11 @@ if st.button("Submit"):
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
 
+"""
 # Add a chat box at the bottom for additional questions
 st.subheader("Ask additional questions about the data")
 
-"""
+
 # Chat box input
 additional_question = st.text_input("Ask additional questions about the data:")
 
