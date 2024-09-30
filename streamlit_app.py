@@ -27,7 +27,7 @@ if uploaded_file is not None:
     # Step 2: Let user select relevant columns
     part_number_col = st.selectbox("Select the column for Part Number:", options=[''] + list(df.columns))
     customer_col = st.selectbox("Select the column for Customer:", options=[''] + list(df.columns))
-    description_col = st.selectbox("Select the column for Part Description (optional):", options=[''] + list(df.columns))
+    description_col = st.selectbox("Select the column for Part Description (optional):", options=['None'] + list(df.columns))
     
     # Let user select multiple columns for sales data
     sales_cols = st.multiselect("Select the columns for Sales Data:", options=list(df.columns))
@@ -35,7 +35,16 @@ if uploaded_file is not None:
     # Step 3: Text Input Fields for Parameters
     part_number = st.text_input("Enter Part Number:")
     customer = st.text_input("Enter Customer Name:")
-    months = st.number_input("Number of recent columns to consider for sales volume:", min_value=1, value=len(sales_cols), max_value=len(sales_cols))
+    
+    # Only show the number input if sales columns are selected
+    if sales_cols:
+        months = st.number_input("Number of recent columns to consider for sales volume:", 
+                                 min_value=1, 
+                                 max_value=len(sales_cols),
+                                 value=min(3, len(sales_cols)))  # Default to 3 or the number of columns if less
+    else:
+        st.warning("Please select sales data columns to proceed.")
+        months = 0
 
     # Step 4: Submit Button to trigger the OpenAI API call
     if st.button("Submit"):
@@ -54,7 +63,7 @@ if uploaded_file is not None:
                     total_sales = filtered_df[recent_sales].sum().sum()
                     
                     # Get part description
-                    part_description = filtered_df[description_col].iloc[0] if description_col else "Description not available"
+                    part_description = filtered_df[description_col].iloc[0] if description_col != 'None' else "Description not available"
                     
                     # Prepare data for the API request
                     data_summary = f"""
