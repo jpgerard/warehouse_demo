@@ -17,11 +17,18 @@ st.header("Based on sales volume and provided data, where should a part be store
 uploaded_file = st.file_uploader("Upload Excel file", type=["xlsx"])
 
 if uploaded_file is not None:
-    # Read the Excel file
-    df = pd.read_excel(uploaded_file)
+    # Read all sheets in the Excel file
+    excel_file = pd.ExcelFile(uploaded_file)
+    sheet_names = excel_file.sheet_names
+
+    # Let user select which sheet to use
+    selected_sheet = st.selectbox("Select the sheet to analyze:", options=sheet_names)
+
+    # Read the selected sheet
+    df = pd.read_excel(excel_file, sheet_name=selected_sheet)
     
     # Display column names to the user
-    st.write("Columns found in the Excel file:")
+    st.write(f"Columns found in the '{selected_sheet}' sheet:")
     st.write(", ".join(df.columns))
 
     # Step 2: Let user select relevant columns
@@ -56,7 +63,7 @@ if uploaded_file is not None:
                 filtered_df = df[(df[part_number_col] == part_number) & (df[customer_col] == customer)]
                 
                 if filtered_df.empty:
-                    st.error(f"No data found for Part Number {part_number} and Customer {customer}")
+                    st.error(f"No data found for Part Number {part_number} and Customer {customer} in the '{selected_sheet}' sheet.")
                 else:
                     # Calculate total sales volume for the specified number of columns
                     recent_sales = sales_cols[-months:]
@@ -67,6 +74,7 @@ if uploaded_file is not None:
                     
                     # Prepare data for the API request
                     data_summary = f"""
+                    Sheet: {selected_sheet}
                     Part Number: {part_number}
                     Customer: {customer}
                     Description: {part_description}
